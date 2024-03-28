@@ -1,0 +1,29 @@
+(Optimal solution)
+
+
+TC : O(n)
+SC: O(n)
+
+
+class Solution {
+    public int maxSubarrayLength(int[] nums, int k) {
+        HashMap<Integer,Integer> map = new HashMap();
+        int ans = Integer.MIN_VALUE;
+        int l=0;
+        int r = 0;
+        while(r<nums.length){
+            map.put(nums[r],map.getOrDefault(nums[r],0)+1);
+            while(map.get(nums[r])>k){
+              int freq = map.get(nums[l]);
+              freq--;
+              map.put(nums[l],freq);
+              l++;
+            }
+
+            ans = Math.max(ans , r-l+1);
+            r++;
+        }
+        return ans;
+    }
+
+}
