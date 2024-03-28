@@ -27,3 +27,37 @@ class Solution {
     }
 
 }
+
+
+
+#  -------> More optimal without the nested loop O(n) <-------
+
+class Solution {
+    public int maxSubarrayLength(int[] nums, int k) {
+        int l=0;
+        int r= 0;
+        int result = 0;
+        int culprit = 0;
+        HashMap<Integer,Integer> map = new HashMap();
+        while(r<nums.length){
+            map.put(nums[r],map.getOrDefault(nums[r],0)+1);
+            if(map.get(nums[r])==k+1){
+                culprit++;
+            }
+            if(culprit>0){
+               int freq = map.get(nums[l]);
+               freq--;
+               map.put(nums[l],freq);
+               if(map.get(nums[l])==k){
+                culprit--;
+               }
+               l++;
+            }
+            if(culprit==0){
+                result = Math.max(result, r-l+1);
+            }
+            r++;
+        }
+        return result;
+    }
+}
