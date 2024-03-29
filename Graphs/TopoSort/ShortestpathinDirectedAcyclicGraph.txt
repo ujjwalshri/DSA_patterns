@@ -1,0 +1,73 @@
+-----> TopoSort Approach  <------
+
+TC: O(n+m);
+SC: O(n+m);
+
+
+#code ---->
+
+
+
+
+class Pair{
+    int first ;
+    int second;
+    Pair(int first, int second){
+        this.first = first ;
+        this.second = second;
+    }
+}
+class Solution {
+
+	public int[] shortestPath(int N,int M, int[][] edges) {
+		//Code here
+		ArrayList<ArrayList<Pair>> adj = new ArrayList();
+		for(int i=0;i<N;i++){
+		    ArrayList<Pair> temp = new ArrayList<Pair>();
+		    adj.add(temp);
+		}
+		for(int i =0;i<M;i++){
+		    int u = edges[i][0];
+		    int v = edges[i][1];
+		    int wt = edges[i][2];
+		    adj.get(u).add(new Pair(v,wt));
+		}
+		int [] vis = new int[N];
+		Stack<Integer> stack = new Stack();
+		for(int i =0;i<N;i++){
+		    if(vis[i]==0){
+		        topoSort(i,vis,adj,stack);
+		    }
+		}
+		int []dis = new int[N];
+		Arrays.fill(dis,(int)1e9);
+		dis[0]=0;
+		while(!stack.isEmpty()){
+		    int node = stack.pop();
+		    for(Pair it: adj.get(node)){
+		        int v = it.first;
+		        int wt = it.second;
+		        if(wt+dis[node] < dis[v]){
+		            dis[v]=dis[node]+wt;
+		        }
+		    }
+		}
+		for(int i =0;i<dis.length;i++){
+		    if(dis[i]==(int)1e9) dis[i]=-1;
+		}
+		return dis;
+		
+		
+	}
+	public static void topoSort(int node, int []vis, ArrayList<ArrayList<Pair>> adj,Stack<Integer> stack){
+	    vis[node]=1;
+	    for(Pair it: adj.get(node)){
+	        int v = it.first;
+	        if(vis[v]!=1){
+	            topoSort(v,vis,adj,stack);
+	        }
+	    }
+	    stack.push(node);
+	    
+	}
+}
