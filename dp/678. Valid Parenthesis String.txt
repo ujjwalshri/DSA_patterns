@@ -1,0 +1,75 @@
+678. Valid Parenthesis String
+
+Medium
+
+Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+
+The following rules define a valid string:
+
+Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+Any right parenthesis ')' must have a corresponding left parenthesis '('.
+Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
+ 
+
+Example 1:
+
+Input: s = "()"
+Output: true
+Example 2:
+
+Input: s = "(*)"
+Output: true
+Example 3:
+
+Input: s = "(*))"
+Output: true
+
+
+------> Memoization  <------
+
+class Solution {
+    public boolean checkValidString(String s) {
+        int open=0;
+        int dp[][]= new int[101][101];
+        for(int []e:dp){
+            Arrays.fill(e, -1);
+        }
+        return helper(s,0,s.length(),open,dp);
+    }
+    public static boolean helper(String s,int ind, int n, int open,int[][]dp){
+        if(ind==n){
+          if(open==0){
+            return true;
+          }
+          return false;
+        }
+        if(dp[ind][open]!=-1)return dp[ind][open]==1?true:false;
+        boolean isValid = false;
+        if(s.charAt(ind)=='('){
+        isValid = isValid || helper( s, ind+1,  n,  open+1,dp);
+        }else if(s.charAt(ind)=='*'){
+            // three cases
+            // first consider asterik as a open 
+            isValid = isValid || helper(s, ind+1, n, open+1,dp);
+            // second case consider asterik as a empty string
+            isValid = isValid || helper(s, ind+1, n, open,dp);
+            // third case consider asterik as a close string
+            if(open>0){
+             isValid = isValid || helper(s, ind+1, n, open-1,dp);
+            }
+            
+        }else{
+            if(open>0){
+               isValid = isValid || helper(s,ind+1, n,open-1,dp);
+            }
+           
+        }
+        if(isValid==false){
+            dp[ind][open]=0;
+        }else{
+            dp[ind][open]=1;
+        }
+        return isValid;
+    }
+}
