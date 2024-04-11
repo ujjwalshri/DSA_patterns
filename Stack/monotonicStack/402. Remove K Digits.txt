@@ -1,0 +1,61 @@
+402. Remove K Digits
+Solved
+Medium
+Topics
+Companies
+Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+ 
+
+Example 1:
+
+Input: num = "1432219", k = 3
+Output: "1219"
+Explanation: Remove the three digits 4, 3, and 2 to form the new number 1219 which is the smallest.
+Example 2:
+
+Input: num = "10200", k = 1
+Output: "200"
+Explanation: Remove the leading 1 and the number is 200. Note that the output must not contain leading zeroes.
+Example 3:
+
+Input: num = "10", k = 2
+Output: "0"
+Explanation: Remove all the digits from the number and it is left with nothing which is 0.
+
+
+
+---> Approach <---- TC : O(n) SC: O(n)
+ 
+  //Approach: -> always try to make the string in increase order starting from the most significant bit
+  // here StringBuilder is working as a Stack;
+
+
+class Solution {
+
+   
+    public String removeKdigits(String num, int k) {
+        int n=num.length();
+        if(k==n)return "0";
+       
+        StringBuilder str = new StringBuilder();
+        for(int i =0;i<n;i++){
+            while( str.length()>0 && str.charAt(str.length() - 1) > num.charAt(i)  && k>0 ){
+                str.deleteCharAt(str.length() - 1);
+                k--;
+            }
+            if(str.length()>0 || num.charAt(i)!='0'){
+                str.append(num.charAt(i));
+            }
+        }
+
+        while(str.length()>0 && k>0){ 
+            str.deleteCharAt(str.length()-1);
+            k--;
+        }
+      if(str.length()==0) return "0";
+      return str.toString();
+
+
+    }
+}
