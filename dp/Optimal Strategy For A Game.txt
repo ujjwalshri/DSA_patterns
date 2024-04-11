@@ -1,0 +1,49 @@
+You are given an array arr of size n. The elements of the array represent n coin of values v1, v2, ....vn. You play against an opponent in an alternating way. In each turn, a player selects either the first or last coin from the row, removes it from the row permanently, and receives the value of the coin.
+You need to determine the maximum possible amount of money you can win if you go first.
+Note: Both the players are playing optimally.
+
+Example 1:
+
+Input:
+n = 4
+arr[] = {5, 3, 7, 10}
+Output: 
+15
+Explanation: The user collects maximum
+value as 15(10 + 5). It is guarantee that we cannot get more than 15 by any possible moves.
+Example 2:
+
+Input:
+n = 4
+arr[] = {8, 15, 3, 7}
+Output: 
+22
+Explanation: The user collects maximum
+value as 22(7 + 15). It is guarantee that we cannot get more than 22 by any possible moves.
+
+
+-------> memo <------
+
+class solve
+{
+    //Function to find the maximum possible amount of money we can win.
+    static long countMaximum(int n, int arr[])
+    {
+        // Your code herei
+        long[][]dp = new long[n][n];
+        for(long []e:dp){
+             Arrays.fill(e,-1);
+        }
+        return helper(0, n-1, arr,dp);
+    }
+    public static long helper(int i, int j, int []arr,long[][]dp){
+
+      if(i>j) return 0;
+      if(i==j)return arr[i];
+      if(dp[i][j]!=-1)return dp[i][j];
+      // we will take the ith ele
+      long x = arr[i]+Math.min(helper(i+2,j,arr,dp) , helper(i+1,j-1,arr,dp));
+      long y = arr[j]+Math.min(helper(i,j-2,arr,dp) , helper(i+1, j-1,arr,dp));
+      return dp[i][j]=Math.max(x,y);
+    }
+}
