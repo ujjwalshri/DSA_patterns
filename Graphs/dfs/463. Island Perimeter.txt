@@ -1,0 +1,51 @@
+463. Island Perimeter
+Solved
+Easy
+Topics
+Companies
+You are given row x col grid representing a map where grid[i][j] = 1 represents land and grid[i][j] = 0 represents water.
+Grid cells are connected horizontally/vertically (not diagonally). The grid is completely surrounded by water, and there is exactly one island (i.e., one or more connected land cells).
+The island doesn't have "lakes", meaning the water inside isn't connected to the water around the island. One cell is a square with side length 1. The grid is rectangular, width and height don't exceed 100. Determine the perimeter of the island.
+
+------> Optimal Approach <----- 
+TC: O(n*m)
+SC: O(n*m)
+
+
+class Solution {
+    int ans = 0;
+    public int islandPerimeter(int[][] grid) {
+
+        int n = grid.length;
+        int m = grid[0].length;
+        int [][]vis = new int[n][m];
+        int delRow[] = {1,0,-1,0};
+        int[]delCol = {0,1,0,-1};
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(vis[i][j]==0 && grid[i][j]==1){
+                    dfs(i, j, grid, vis,delRow,delCol);
+                }
+            }
+        }
+        return ans;
+    }
+    public void dfs(int row, int col , int[][]grid, int[][]vis, int[]delRow, int[]delCol){
+        vis[row][col]=1;
+        int n = grid.length;
+        int m = grid[0].length;
+        for(int i = 0;i<delRow.length;i++){
+            int nrow = row+delRow[i];
+            int ncol  = col+delCol[i];
+            if(nrow<0 || nrow>=n || ncol<0 || ncol>=m){
+                ans++;
+            }
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol]==0){
+                ans++;
+            }
+            if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][col]!=1 && grid[nrow][ncol]==1){
+                dfs(nrow, ncol, grid, vis,delRow,delCol);
+            }
+        }
+    }
+}
