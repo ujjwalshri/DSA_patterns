@@ -41,7 +41,9 @@ target and deadends[i] consist of digits only.
 
 
 -----> BFS Approach <-----
-
+ 
+TC : O(N^w)   Exponential 
+SC : Exponential as well
 
 class Pair{
     String com;
