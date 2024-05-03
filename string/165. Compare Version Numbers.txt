@@ -51,6 +51,7 @@ class Solution {
         //(it matches any character). 
         //To split by a literal dot, you need to escape it with a double backslash "\". 
         //Here's the corrected code:
+        
        String[] arr1 = version1.split("\\.");
 int n = arr1.length;
 String[] arr2 = version2.split("\\.");
