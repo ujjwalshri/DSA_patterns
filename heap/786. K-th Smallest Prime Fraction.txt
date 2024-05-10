@@ -1,0 +1,79 @@
+786. K-th Smallest Prime Fraction
+Solved
+Medium
+Topics
+Companies
+You are given a sorted integer array arr containing 1 and prime numbers, where all the integers of arr are unique. You are also given an integer k.
+
+For every i and j where 0 <= i < j < arr.length, we consider the fraction arr[i] / arr[j].
+
+Return the kth smallest fraction considered. Return your answer as an array of integers of size 2, where answer[0] == arr[i] and answer[1] == arr[j].
+
+ 
+
+Example 1:
+
+Input: arr = [1,2,3,5], k = 3
+Output: [2,5]
+Explanation: The fractions to be considered in sorted order are:
+1/5, 1/3, 2/5, 1/2, 3/5, and 2/3.
+The third fraction is 2/5.
+Example 2:
+
+Input: arr = [1,7], k = 1
+Output: [1,7]
+ 
+
+Constraints:
+
+2 <= arr.length <= 1000
+1 <= arr[i] <= 3 * 104
+arr[0] == 1
+arr[i] is a prime number for i > 0.
+All the numbers of arr are unique and sorted in strictly increasing order.
+1 <= k <= arr.length * (arr.length - 1) / 2
+ 
+
+Follow up: Can you solve the problem with better than O(n2) complexity?
+
+
+
+
+---- heap sol  -------
+
+
+class Pair{
+    float frac;
+    int first;
+    int second;
+    Pair(float frac, int first, int second){
+        this.frac = frac;
+        this.first = first;
+        this.second = second;
+    }
+}
+
+class Solution {
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+        int []ans = new int[2];
+        int n = arr.length;
+        PriorityQueue<Pair> heap = new PriorityQueue<>((a, b) -> Float.compare(a.frac, b.frac));
+
+
+        for(int i = 0;i<n-1;i++){
+            for(int j = i+1; j<n;j++){
+                float frac = (float)arr[i]/arr[j];
+                heap.offer(new Pair((float)frac, arr[i], arr[j]));
+            }
+        }
+        if(k>heap.size())return new int[]{-1,-1};
+        for(int i = 1;i<=k;i++){
+           Pair temp = heap.poll();
+           ans[0] = temp.first; 
+           ans[1] = temp.second;
+        }
+        return ans;
+        
+        
+    }
+}
