@@ -48,7 +48,7 @@ There are at most 25 cells containing gold.
 
 
 ------->>>>> Optimal <<<<<------
-
+//  TC : Exponential
 
 class Solution {
     public int getMaximumGold(int[][] grid) {
@@ -74,7 +74,7 @@ class Solution {
         
         vis[row][col]=1;
         int curGold = grid[row][col];
-       
+
         int left = recursionJi(row, col-1,grid, vis,n,m);
         int right = recursionJi(row,col+1,grid,vis,n,m);
         int down = recursionJi(row+1,col,grid, vis,n,m);
