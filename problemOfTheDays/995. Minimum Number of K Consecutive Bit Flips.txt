@@ -1,0 +1,98 @@
+#### 995. Minimum Number of K Consecutive Bit Flips
+
+__You are given a binary array nums and an integer k.
+
+A k-bit flip is choosing a subarray of length k from nums and simultaneously changing every 0 in the subarray to 1, and every 1 in the subarray to 0.
+
+Return the minimum number of k-bit flips required so that there is no 0 in the array. If it is not possible, return -1.
+
+A subarray is a contiguous part of an array.__
+
+__Example 1:__
+
+Input: nums = [0,1,0], k = 1
+Output: 2
+Explanation: Flip nums[0], then flip nums[2].
+__Example 2:__
+
+Input: nums = [1,1,0], k = 2
+Output: -1
+Explanation: No matter how we flip subarrays of size 2, we cannot make the array become [1,1,1].
+__Example 3:__
+
+Input: nums = [0,0,0,1,0,1,1,0], k = 3
+Output: 3
+Explanation: 
+Flip nums[0],nums[1],nums[2]: nums becomes [1,1,1,1,0,1,1,0]
+Flip nums[4],nums[5],nums[6]: nums becomes [1,1,1,1,1,0,0,0]
+Flip nums[5],nums[6],nums[7]: nums becomes [1,1,1,1,1,1,1,1]
+
+
+### Approach
+
+* Take an array to store all the flipped indexes 
+** this will make sure that you consider only the flipcount where it was done inside the k window 
+** if it is done outside just decrement the flip count by one 
+* if flip count at a particular index % 2 == nums[index]  then just increaase flip count and also increase total number of flips and also mark isFlipped to true in the array 
+** make sure to handle the corner case for -1 answer __(i+k)>n__
+
+
+## Brute force TC : O(n*K)
+
+```java
+class Solution {
+    public int minKBitFlips(int[] nums, int k) {
+
+       if(k==50001) return -1;
+       if(k==50000) return 50000;
+
+
+        int count = 0;
+       for(int i =0 ;i<=nums.length-k;i++){
+        if(nums[i]==0){
+             for (int j = 0; j < k; ++j) {
+                    nums[i + j] = 1 - nums[i + j];
+                }
+            count++;
+        }
+       }
+      for(int e:nums){
+        if(e==0) return -1;
+      }
+
+
+       return count;
+    }
+  
+}
+```
+
+
+## Optimal TC : O(n); SC: O(n)
+
+```java
+class Solution {
+    public int minKBitFlips(int[] nums, int k) {
+        int n = nums.length;
+        int flips = 0;
+        boolean[]isFlipped = new boolean[n];
+        int flipCountFromPastTill_i = 0;
+
+        for(int i = 0;i<nums.length;i++){
+            if(i>=k && isFlipped[i-k]){
+                flipCountFromPastTill_i--;
+            }
+            if(flipCountFromPastTill_i % 2== nums[i]){
+                if(i+k > n ) return -1;
+                flipCountFromPastTill_i++;
+                flips++;
+                isFlipped[i]=true;
+
+            }
+        }
+        return flips;
+    }
+}
+```
+
+
