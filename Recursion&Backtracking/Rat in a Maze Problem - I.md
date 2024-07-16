@@ -33,6 +33,11 @@ blocked.
 ### Optimized recursive solution 
 
 ```java
+
+
+// User function Template for Java
+
+// m is the given matrix and n is the order of matrix
 class Solution {
     public static int N;
     public static ArrayList<String> findPath(int[][] m, int n) {
@@ -43,7 +48,11 @@ class Solution {
             list.add("-1");
             return list;
         }
-        
+        if(m[0][0]!= 1) {
+             ArrayList<String> list = new ArrayList();
+            list.add("-1");
+            return list;
+        }
         ArrayList<String> outer = new ArrayList();
         
         helper(m, 0, 0, outer, new StringBuilder());
@@ -56,20 +65,29 @@ class Solution {
             return;
         }
         if(row < 0 || row >= N || col < 0 || col>= N) return;
+        m[row][col]= 0;
         // call left
         if( col-1 >= 0 && m[row][col-1]==1){
-            helper(m, row, col-1, outer,path.append('L'));
+            path.append('L');
+            helper(m, row, col-1, outer,path);
+            path.deleteCharAt(path.length()-1);
         }
         if(col+1 < N && m[row][col+1]==1){
-            helper(m, row, col+1, outer,path.append('R'));
+            path.append('R');
+            helper(m, row, col+1, outer,path);
+            path.deleteCharAt(path.length()-1);
         }
         if(row+1 < N && m[row+1][col]==1){
-            helper(m, row+1, col, outer,path.append('D'));
+            path.append('D');
+            helper(m, row+1, col, outer,path);
+            path.deleteCharAt(path.length()-1);
         }
         if( row-1 >=0 && m[row-1][col]==1){
-            helper(m, row-1, col, outer,path.append('U'));
+            path.append('U');
+            helper(m, row-1, col, outer,path);
+            path.deleteCharAt(path.length()-1);
         }
-        path.
+        m[row][col]=1;
        
     }
 }
